@@ -1,0 +1,37 @@
+{
+  "name": "bind-deep",
+  "version": "1.0.0",
+  "description": "Lightweight module for binding a function or object deeply.",
+  "keywords": [
+    "bind",
+    "deep",
+    "function"
+  ],
+  "bugs": {
+    "url": "https://github.com/evelynhathaway/bind-deep/issues"
+  },
+  "license": "MIT",
+  "author": "Evelyn Hathaway <npm@evelynhathaway.com> (https://evelynhathaway.com)",
+  "main": "./lib/index.js",
+  "directories": {
+    "lib": "./lib",
+    "test": "./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/evelynhathaway/bind-deep.git"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "eslint": "^4.15.0",
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-node": "^5.2.1",
+    "mocha": "^4.1.0"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  }
+}
