@@ -22,7 +22,8 @@
     "url": "https://github.com/evelynhathaway/bind-deep.git"
   },
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "lint": "node ./node_modules/eslint/bin/eslint **/*.js"
   },
   "devDependencies": {
     "chai": "^4.1.2",
