@@ -24,8 +24,12 @@
   "scripts": {
     "test": "mocha test",
     "lint": "node ./node_modules/eslint/bin/eslint **/*.js"
+    "babel-test": "babel test -d lib-test && mocha lib-test",
+    "build": "babel src -d lib",
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "chai": "^4.1.2",
     "eslint": "^4.15.0",
     "eslint-plugin-mocha": "^4.11.0",

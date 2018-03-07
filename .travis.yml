@@ -8,5 +8,5 @@ cache:
 install:
 - npm install
 script:
-- npm test
 - npm run lint
+- npm run babel-test

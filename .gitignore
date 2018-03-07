@@ -8,3 +8,9 @@ node_modules/
 ## Debug
 #################
 debug.js
+
+
+#################
+## Babel tests
+#################
+lib-test/

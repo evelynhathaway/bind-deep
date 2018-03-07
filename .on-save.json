@@ -1,0 +1,6 @@
+[
+  {
+    "files": "src/**/*.js",
+    "command": "npm run build"
+  }
+]
