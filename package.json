@@ -1,11 +1,14 @@
 {
   "name": "bind-deep",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Lightweight module for binding a function or object deeply.",
   "keywords": [
     "bind",
     "deep",
-    "function"
+    "function",
+    "object",
+    "context",
+    "this"
   ],
   "bugs": {
     "url": "https://github.com/evelynhathaway/bind-deep/issues"
@@ -23,9 +26,9 @@
   },
   "scripts": {
     "test": "mocha test",
-    "lint": "node ./node_modules/eslint/bin/eslint **/*.js"
     "babel-test": "babel test -d lib-test && mocha lib-test",
     "build": "babel src -d lib",
+    "lint": "eslint --ext .js ./"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
