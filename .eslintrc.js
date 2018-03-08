@@ -11,7 +11,9 @@ module.exports = {
 		"sourceType": "module",
 		"ecmaVersion": 2018
 	},
-	"extends": ["eslint:recommended", "plugin:node/recommended"],
+	"extends": [
+		"eslint:recommended", "plugin:node/recommended"
+	],
 	"rules": {
 		"indent": [
 			"error",

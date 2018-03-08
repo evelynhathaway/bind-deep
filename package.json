@@ -4,10 +4,10 @@
   "description": "Lightweight module for binding a function or object deeply.",
   "keywords": [
     "bind",
+    "context",
     "deep",
     "function",
     "object",
-    "context",
     "this"
   ],
   "bugs": {
@@ -25,10 +25,10 @@
     "url": "https://github.com/evelynhathaway/bind-deep.git"
   },
   "scripts": {
-    "test": "mocha test",
     "babel-test": "babel test -d lib-test && mocha lib-test",
     "build": "babel src -d lib",
-    "lint": "eslint --ext .js ./"
+    "lint": "eslint --ext .js ./",
+    "test": "mocha test"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
