@@ -2,13 +2,10 @@
 /*
 	Tests for the bind-deep module
 */
-
-
 /*
 	Module dependencies
 */
-// Assertion library
-const expect = require("chai").expect;
+const {expect} = require("chai");
 // Module to test
 const bindDeep = require("../lib/index.js");
 
@@ -20,127 +17,180 @@ describe("bind-deep", function() {
 	const fakes = {};
 	const dummies = {};
 
+
 	/*
-		Hoisting
+		Functions
 	*/
-	let checkDeep;
-	let matchDeep;
+	// Test maker for all contexts
+	const check = function(result, template, path = "result") {
+		describe(path, function() {
+			if (template instanceof Object) {
+				// typeof
+				const templateType = typeof template;
+				it(`should be typeof ${templateType}`, function() {
+					expect(typeof result).to.equal(templateType);
+				});
 
-
-	before(function() {
-		/*
-			Functions
-		*/
-		checkDeep = function(object) {
-			// Record amount of functions
-			let functions = 0;
-
-			// Skip arrays
-			if (Array.isArray(object)) {
-				return 0;
-			}
-
-			// Assert each function
-			if (typeof object === "function") {
-				expect(
-					object()
-				).to.equal(
-					dummies.this
-				);
-				// Record amount of functions
-				functions++;
-			}
-
-			// Check functions and objects (not arrays) recursively
-			if (typeof object === "object" || typeof object === "function") {
-				for (const key in object) {
-					if (object.hasOwnProperty(key)) {
-						// Record amount of functions
-						functions += checkDeep(object[key]);
-					}
+				// instanceof
+				for (const ClassType of [Function, Array]) {
+					const templateInstance = template instanceof ClassType;
+					it(`should ${templateInstance ? "" : "not "}be instanceof ${ClassType}`, function() {
+						expect(result instanceof ClassType).to.equal(templateInstance);
+					});
 				}
-			}
 
-			return functions;
-		};
+				// isArray
+				const templateIsArray = Array.isArray(template);
+				it(`should ${templateIsArray ? "" : "not "}be an array`, function() {
+					expect(Array.isArray(result)).to.equal(templateIsArray);
+				});
 
-		matchDeep = function(object, template) {
-			// Assert each !function !object
-			if (typeof object !== "function" && typeof object !== "object") {
-				expect(
-					object
-				).to.equal(
-					template
-				);
-			}
-
-			// Check functions and objects (not arrays) recursively
-			if (typeof object === "object" || typeof object === "function") {
-				for (const key in object) {
-					if (object.hasOwnProperty(key)) {
-						// Record amount of functions
-						matchDeep(object[key], template[key]);
-					}
+				// Is bound? - assume function is `bindTester`
+				const hasClassName = template.hasOwnProperty("prototype") && template.prototype.constructor.name;
+				if (template instanceof Function && !hasClassName) {
+					it("should be bound to thisArg and have the correct arguments", function() {
+						result();
+					});
 				}
+
+				// Has same prototype
+				it("should have the same prototype", function() {
+					expect(Object.getPrototypeOf(result) === Object.getPrototypeOf(template)).to.be.true;
+				});
+
+				// Properties - get both enumerable and non own props
+				for (const key of Object.getOwnPropertyNames(template)) {
+					// Look for non-enumerable properties from template on result
+					if (template.propertyIsEnumerable(key)) {
+						const descriptor = Object.getOwnPropertyDescriptor(template, key);
+						if (descriptor.get || descriptor.set) {
+							// Accessors
+							if (descriptor.get) {
+								describe(`${path}.${key} (getter)`, function() {
+									it("should have a bound getter", function() {
+										result[key];
+									});
+								});
+							}
+							if (descriptor.set) {
+								describe(`${path}.${key} (setter)`, function() {
+									it("should have a bound setter", function() {
+										result[key] = "set";
+									});
+								});
+							}
+						} else {
+							// Recursive
+							check(result[key], template[key], `${path}${isNaN(parseInt(key)) ? `.${key}` : `[${key}]`}`);
+						}
+					} else {
+						if (key !== "name" && key !== "length") {
+							it(`should not have a copied non-enumerable property "${key}"`, function() {
+								expect(result.hasOwnProperty(key)).to.be.false;
+							});
+						}
+					}
+
+
+				}
+			} else {
+				it("should equal the template", function() {
+					expect(result).to.equal(template);
+				});
 			}
-		};
+		});
+	};
+
+	// Assertion maker for bindings and arguments used as the function to be called when testing
+	const bindTester = function() {
+		expect(
+			this
+		).to.deep.equal(
+			dummies.this
+		);
+
+		expect(
+			Array.from(arguments)
+		).to.deep.equal(
+			dummies.args
+		);
+	};
 
 
-		/*
-			Fakes
-		*/
-		// Fake object and functions to bind-deep
-		fakes.obj = {
-			"string": "Test me already!",
-			"array": [1, 2, 3],
-			"object": {"key": "value"},
-			"function": function() {return this;},
-			method() {return this;},
-			"object with function": {"function": function() {return this;}}
-		};
-		fakes.func = Object.assign(function() {
-			return this;
-		}, fakes.obj);
+	/*
+		Dummies
+	*/
+	// Dummy function that returns `this`
+	dummies["function"] = function() {bindTester.call(this, ...arguments);};
+	// Dummy `thisArg` value
+	dummies.this = {"whoami": "dummies.this"};
+	// Dummy `args` value
+	dummies.args = ["arg1", "arg2", "arg3"];
+	// Dummy prototype
+	dummies.proto = {"whoami": "dummies.proto"};
 
-		// Dummy `thisArg` value
-		dummies.this = {
-			"whoami": "I am the `this` dummy you made, master."
-		};
+	dummies.true =  true;
+	dummies.false =  false;
+	dummies.undefined =  undefined;
+	dummies.null =  null;
+	dummies.string =  "string";
+	// Array
+	dummies.array = [1, 2, 3, dummies["function"]];
+	dummies.array["function"] = dummies["function"]; // Non-indexed property
+	// Object
+	dummies.object =  {"key": "value", "function": dummies["function"]};
+	// Array without the array proto
+	dummies.protoarray = Object.setPrototypeOf([], dummies.proto);
+	// Class and instance
+	dummies.Class = class DummyClass {
+		constructor() {this["function"] = dummies["function"];}
+	};
+	dummies.Class["function"] = dummies["function"]; // Static
+	dummies.instance = new dummies.Class();
+	// Getters and setters
+	dummies.accessor = {
+		get prop() {
+			bindTester.call(this, ...arguments);
+		},
+		set prop(arg) {
+			const args = Array.from(arguments);
+
+			// Remove setter argument
+			expect(args.pop()).to.equal("set");
+
+			bindTester.call(this, ...args);
+		}
+	};
+	// Non-enumerable descriptor
+	dummies.descriptor = {
+		"value": "nonenum",
+		"enumerable": false
+	};
+
+
+	/*
+		Fakes
+	*/
+	// Top-level fakes
+	// - These objects I determinded are important to test that they functioned correctly on the first go
+	// Function
+	fakes["function"] = Object.assign(function() {bindTester.call(this, ...arguments);}, dummies);
+	Object.defineProperty(fakes["function"], "nonenum", dummies.descriptor);
+	// Object
+	fakes.object = Object.assign({}, dummies);
+	Object.defineProperty(fakes.object, "nonenum", dummies.descriptor);
+
+
+	/*
+		Contexts
+	*/
+	context("when binding an function", function() {
+		const result = bindDeep(fakes["function"], dummies.this, ...dummies.args);
+		check(result, fakes["function"]);
 	});
 
-
-	context("when using an function", function() {
-		let result;
-		before("bind-deep the fake function", function() {
-			result = bindDeep(dummies.this, fakes.func);
-		});
-
-		it("should return a function", function() {
-			expect(typeof result === "function").to.be.true;
-		});
-		it("should have all functions and methods bound and have 4 of them", function() {
-			expect(checkDeep(result)).to.equal(4);
-		});
-		it("should still have same strings, arrays, etc.", function() {
-			matchDeep(result, fakes.func);
-		});
-	});
-
-
-	context("when using an object", function() {
-		let result;
-		before("bind-deep the fake object", function() {
-			result = bindDeep(dummies.this, fakes.obj);
-		});
-
-		it("should return an object", function() {
-			expect(typeof result === "object").to.be.true;
-		});
-		it("should have all functions and methods bound and have 3 of them", function() {
-			expect(checkDeep(result)).to.equal(3);
-		});
-		it("should still have same strings, arrays, etc.", function() {
-			matchDeep(result, fakes.obj);
-		});
+	context("when binding an object", function() {
+		const result = bindDeep(fakes.object, dummies.this, ...dummies.args);
+		check(result, fakes.object);
 	});
 });

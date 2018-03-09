@@ -7,6 +7,14 @@
 Bind an object to `this` in all methods in a function or object. Simple, dependency-free alternative to [deep-bind](https://github.com/jonschlinkert/deep-bind).
 
 
+## Features
+- Works with functions, arrays, and other objects
+	- Works with most custom classes, array-like objects, etc.
+- Binds root function and all own, enumerable property functions
+	- Includes binding accessors — getters and setters
+- Copies objects and enumerable properties deeply
+- Preserves and copies prototype for all types
+
 ## Installation
 ###### From npm
 ```bash
@@ -31,7 +39,15 @@ $ npm install
 ---
 
 
-## Usage
+## API
+
+```js
+bindDeep(object [Function, Object, Array], thisArg [Object], ...args)
+// => bound [Function, Object, Array]
+```
+
+
+## Example
 ```js
 // Require bind-deep
 const bindDeep = require("bind-deep");
@@ -55,10 +71,10 @@ const obj = {
 
 // Deeply bound object and function
 // `thisArg` will be what every function and method will see as `this`
-const boundObj = bindDeep(thisArg, obj);
+const boundObj = bindDeep(obj, thisArg);
 // => {method: [Function: bound]}
 
-const boundFunc = bindDeep(thisArg, func);
+const boundFunc = bindDeep(func, thisArg);
 // => {[Function: bound] method: [Function: bound]}
 ```
 

@@ -3,11 +3,17 @@ module.exports = {
 		"es6": true,
 		"node": true
 	},
-	"plugins": ["node"],
-	"extends": ["eslint:recommended", "plugin:node/recommended"],
+	"plugins": [
+		"node",
+		"mocha"
+	],
 	"parserOptions": {
-		"sourceType": "module"
+		"sourceType": "module",
+		"ecmaVersion": 2018
 	},
+	"extends": [
+		"eslint:recommended", "plugin:node/recommended"
+	],
 	"rules": {
 		"indent": [
 			"error",
@@ -28,15 +34,9 @@ module.exports = {
 			"error",
 			"always"
 		],
-		"no-var": [
-			"error"
-		],
-		"no-console": [
-			"error"
-		],
-		"no-throw-literal": [
-			"error"
-		],
+		"no-var": "error",
+		"no-console": "error",
+		"no-throw-literal": "error",
 		"quote-props": [
 			"warn",
 			"as-needed",
@@ -50,22 +50,32 @@ module.exports = {
 			{
 				"commentPattern": "falls?\\s?through|break"
 			}
+		],
+		// Allow unsupported features without Babel
+		"node/no-unsupported-features": [
+			"off"
 		]
 	},
 	"overrides": [
+		// Babel built files
+		{
+			"files": [
+				"lib/**/*.js"
+			],
+			"rules": {
+				"node/no-unsupported-features": "error",
+				"no-var": "off",
+				"no-unsafe-finally": "off"
+			},
+		},
 		// Mocha tests
 		{
 			"files": [
 				"test/**/*.js"
 			],
 			"env": {
-				"es6": true,
-				"node": true,
 				"mocha": true
 			},
-			"plugins": [
-				"mocha"
-			],
 			"rules": {
 				"mocha/handle-done-callback": "error",
 				"mocha/no-exclusive-tests": "error",
