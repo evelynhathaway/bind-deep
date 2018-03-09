@@ -12,7 +12,7 @@ Bind an object to `this` in all methods in a function or object. Simple, depende
 	- Works with most custom classes, array-like objects, etc.
 - Binds root function and all own, enumerable property functions
 	- Includes binding accessors — getters and setters
-- Copies objects and properties deeply
+- Copies objects and enumerable properties deeply
 - Preserves and copies prototype for all types
 
 ## Installation
