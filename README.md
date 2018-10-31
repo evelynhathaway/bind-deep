@@ -56,16 +56,16 @@ const bindDeep = require("bind-deep");
 // Original object and function
 // Could also be an actual object
 const func = function() {
-	// Use `this`
+    // Use `this`
 };
 func.method = function() {
-	// Use `this` again
+    // Use `this` again
 };
 
 const obj = {
-	method() {
-		// Use `this`
-	}
+    method() {
+        // Use `this`
+    }
 };
 
 
