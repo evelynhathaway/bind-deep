@@ -7,7 +7,7 @@
 */
 const {expect} = require("chai");
 // Module to test
-const bindDeep = require("../lib/index.js");
+const bindDeep = require("../src/index.js");
 
 
 describe("bind-deep", function() {
@@ -150,7 +150,7 @@ describe("bind-deep", function() {
 	// Getters and setters
 	dummies.accessor = {
 		get prop() {
-			bindTester.call(this, ...arguments);
+			return bindTester.call(this, ...arguments);
 		},
 		set prop(arg) {
 			const args = Array.from(arguments);

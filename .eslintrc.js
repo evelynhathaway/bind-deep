@@ -52,9 +52,8 @@ module.exports = {
 			}
 		],
 		// Allow unsupported features without Babel
-		"node/no-unsupported-features": [
-			"off"
-		]
+		"node/no-unsupported-features/es-syntax": "off",
+		"node/no-unsupported-features/es-builtins": "off"
 	},
 	"overrides": [
 		// Babel built files
@@ -63,7 +62,9 @@ module.exports = {
 				"lib/**/*.js"
 			],
 			"rules": {
-				"node/no-unsupported-features": "error",
+				"indent": "off",
+				"node/no-unsupported-features/es-syntax": "error",
+				"node/no-unsupported-features/es-builtins": "error",
 				"no-var": "off",
 				"no-unsafe-finally": "off"
 			},

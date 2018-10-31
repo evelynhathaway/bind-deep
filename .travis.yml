@@ -1,7 +1,6 @@
 language: node_js
 node_js:
 - node
-- '4'
 cache:
   directories:
   - node_modules
@@ -9,4 +8,4 @@ install:
 - npm install
 script:
 - npm run lint
-- npm run babel-test
+- npm run test

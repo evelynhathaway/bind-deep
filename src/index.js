@@ -1,3 +1,10 @@
+/**
+ * Bind a function or object deeply
+ * @module bind-deep
+ * @author Evelyn Hathaway
+ * @license MIT
+ */
+
 "use strict";
 
 const bindDeep = function(object, thisArg, ...args) {
