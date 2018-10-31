@@ -22,7 +22,7 @@ const bindDeep = function(object, thisArg, ...args) {
 		}
 	} else if (Array.isArray(object)) { // Create bound array
 		// Run bindDeep over array if isArray ([1, 2, 3] but not {"0": 1, "0": 2, "0": 3, "Symbol.species": Array})
-		// Add the array's indexed own properties, all other will be re-added as if it was an object
+		// Add the array's indexed own properties, all others will be re-added as if it was an object
 		// - Use standard for loop over using Array.prototype.map or iterator in case the prototype was overridden
 		bound = [];
 		for (let i = 0; i < object.length; i++) {
