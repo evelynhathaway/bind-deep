@@ -1,6 +1,6 @@
 # bind-deep
 [![npm version](https://img.shields.io/npm/v/bind-deep.svg)](https://www.npmjs.com/package/bind-deep)
-[![Travis](https://img.shields.io/travis/evelynhathaway/bind-deep.svg)](https://travis-ci.org/evelynhathaway/bind-deep)
+[![Travis](https://img.shields.io/travis/com/evelynhathaway/bind-deep.svg)](https://travis-ci.com/evelynhathaway/bind-deep/)
 [![license](https://img.shields.io/github/license/evelynhathaway/bind-deep.svg)](/LICENSE)
 
 ## Description
