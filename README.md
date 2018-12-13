@@ -1,53 +1,39 @@
 # bind-deep
-[![npm version](https://img.shields.io/npm/v/bind-deep.svg)](https://www.npmjs.com/package/bind-deep)
-[![Travis](https://img.shields.io/travis/com/evelynhathaway/bind-deep.svg)](https://travis-ci.com/evelynhathaway/bind-deep/)
-[![license](https://img.shields.io/github/license/evelynhathaway/bind-deep.svg)](/LICENSE)
+
+[![npm version](https://badgen.net/npm/v/bind-deep?icon=npm)](https://www.npmjs.com/package/bind-deep)
+[![build status](https://badgen.net/travis/evelynhathaway/bind-deep/master?icon=travis)](https://travis-ci.com/evelynhathaway/bind-deep)
+[![license](https://badgen.net/badge/license/MIT/blue)](/LICENSE)
 
 ## Description
-Bind an object to `this` in all methods in a function or object. Simple, dependency-free alternative to [deep-bind](https://github.com/jonschlinkert/deep-bind).
 
+Bind an object to `this` in all methods in a function, object, or array. A simple, dependency-free alternative to [deep-bind](https://github.com/jonschlinkert/deep-bind).
 
 ## Features
+
 - Works with functions, arrays, and other objects
-	- Works with most custom classes, array-like objects, etc.
-- Binds root function and all own, enumerable property functions
+	- Works with most custom classes, and array-like objects
+- Binds root function (if passed a function) and all own, enumerable property functions
 	- Includes binding accessors — getters and setters
 - Copies objects and enumerable properties deeply
 - Preserves and copies prototype for all types
 
 ## Installation
-###### From npm
-```bash
-$ npm install bind-deep
-```
-###### As a dependency
-```bash
-# Create package.json for your own module if you haven't already
-$ npm init
 
-# Install bind-deep and add to dependencies
-$ npm install bind-deep --save
-```
-###### From source
 ```bash
-$ git clone https://github.com/evelynhathaway/bind-deep
-$ cd bind-deep/
-$ npm install
+npm install bind-deep --save
 ```
-
 
 ---
-
 
 ## API
 
 ```js
-bindDeep(object [Function, Object, Array], thisArg [Object], ...args)
-// => bound [Function, Object, Array]
+bindDeep(object: Function | Object | Array, thisArg: Object, ...args:)
+// => bound: Function | Object | Array
 ```
 
-
 ## Example
+
 ```js
 // Require bind-deep
 const bindDeep = require("bind-deep");
@@ -78,6 +64,8 @@ const boundFunc = bindDeep(func, thisArg);
 // => {[Function: bound] method: [Function: bound]}
 ```
 
+---
 
 ## License
-Copyright Evelyn Hathaway, [MIT License](https://github.com/evelynhathaway/bind-deep/blob/master/LICENSE)
+
+Copyright Evelyn Hathaway, [MIT License](/LICENSE)
