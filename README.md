@@ -2,6 +2,7 @@
 
 [![npm version](https://badgen.net/npm/v/bind-deep?icon=npm)](https://www.npmjs.com/package/bind-deep)
 [![build status](https://badgen.net/travis/evelynhathaway/bind-deep/master?icon=travis)](https://travis-ci.com/evelynhathaway/bind-deep)
+[![minified + gzip bundle size](https://badgen.net/bundlephobia/minzip/bind-deep)](https://bundlephobia.com/result?p=bind-deep)
 [![license](https://badgen.net/badge/license/MIT/blue)](/LICENSE)
 
 ## Description

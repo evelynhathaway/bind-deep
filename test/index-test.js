@@ -159,12 +159,12 @@ describe("bind-deep", function() {
 			expect(args.pop()).to.equal("set");
 
 			bindTester.call(this, ...args);
-		}
+		},
 	};
 	// Non-enumerable descriptor
 	dummies.descriptor = {
 		"value": "nonenum",
-		"enumerable": false
+		"enumerable": false,
 	};
 
 
