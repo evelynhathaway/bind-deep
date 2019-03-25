@@ -1,6 +1,6 @@
 {
   "name": "bind-deep",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Lightweight module for binding a function or object deeply.",
   "keywords": [
     "bind",
@@ -18,7 +18,7 @@
     "url": "https://github.com/evelynhathaway/bind-deep.git"
   },
   "license": "MIT",
-  "author": "Evelyn Hathaway <npm@evelynhathaway.com> (https://evelynhathaway.com)",
+  "author": "Evelyn Hathaway <npm@evelyn.dev> (https://evelyn.dev)",
   "files": [
     "/lib"
   ],
