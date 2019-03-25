@@ -28,7 +28,7 @@ const bindDeep = function(object, thisArg, ...args) {
 			bound = object.bind(thisArg, ...args);
 		}
 	} else if (Array.isArray(object)) { // Create bound array
-		// Run bindDeep over array if isArray ([1, 2, 3] but not {"0": 1, "0": 2, "0": 3, "Symbol.species": Array})
+		// Run bindDeep over array if isArray ([1, 2, 3] but not {"0": 1, "1": 2, "2": 3, "Symbol.species": Array})
 		// Add the array's indexed own properties, all others will be re-added as if it was an object
 		// - Use standard for loop over using Array.prototype.map or iterator in case the prototype was overridden
 		bound = [];
@@ -54,7 +54,7 @@ const bindDeep = function(object, thisArg, ...args) {
 	// Add own enumerable properties to bound object (shortcut for for-in-ownprop loop)
 	for (const key of Object.keys(object)) {
 		// Skip existing own properties (i.e. when binding an array)
-		if (Object.hasOwnProperty(bound, key)) {
+		if (Object.prototype.hasOwnProperty.call(bound, key)) {
 			continue;
 		}
 
