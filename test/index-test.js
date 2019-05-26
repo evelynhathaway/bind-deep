@@ -46,7 +46,7 @@ describe("bind-deep", function() {
 				});
 
 				// Is bound? - assume function is `bindTester`
-				const hasClassName = template.hasOwnProperty("prototype") && template.prototype.constructor.name;
+				const hasClassName = Object.prototype.hasOwnProperty.call(template, "prototype") && template.prototype.constructor.name;
 				if (template instanceof Function && !hasClassName) {
 					it("should be bound to thisArg and have the correct arguments", function() {
 						result();
@@ -61,7 +61,7 @@ describe("bind-deep", function() {
 				// Properties - get both enumerable and non own props
 				for (const key of Object.getOwnPropertyNames(template)) {
 					// Look for non-enumerable properties from template on result
-					if (template.propertyIsEnumerable(key)) {
+					if (Object.prototype.propertyIsEnumerable.call(template, key)) {
 						const descriptor = Object.getOwnPropertyDescriptor(template, key);
 						if (descriptor.get || descriptor.set) {
 							// Accessors
@@ -86,7 +86,7 @@ describe("bind-deep", function() {
 					} else {
 						if (key !== "name" && key !== "length") {
 							it(`should not have a copied non-enumerable property "${key}"`, function() {
-								expect(result.hasOwnProperty(key)).to.be.false;
+								expect(Object.prototype.hasOwnProperty.call(result, key)).to.be.false;
 							});
 						}
 					}

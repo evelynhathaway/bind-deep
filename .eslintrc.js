@@ -1,22 +1,20 @@
-const extend = require("eslint-plugin-evelyn/lib/extend");
-
 module.exports = {
 	"plugins": [
 		"evelyn",
 	],
 	"extends": [
-		"plugin:evelyn/auto",
 		"plugin:evelyn/source",
 		"plugin:evelyn/node",
+		"plugin:evelyn/auto",
 	],
 	"overrides": [
-		extend(
-			"built",
-			{
-				"files": [
-					"lib/**/*.js",
-				],
-			},
-		),
+		{
+			"files": [
+				"lib/**/*.js",
+			],
+			"extends": [
+				"plugin:evelyn/built",
+			],
+		},
 	],
 };
