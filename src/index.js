@@ -7,7 +7,26 @@
 
 "use strict";
 
-const bindDeep = function(object, thisArg, ...args) {
+/**
+ * Bind a function or object deeply
+ * @function
+ * @param {Function|Object|Array} object Function or object to bind itself and all of its methods
+ * @param {Object} thisArg The value bound to `this` for each bound function and method when called
+ * @param {...*} [args] Arguments provided to the bound function when the bound function is invoked
+ * @returns {Function|Object|Array} The function or object passed as `object` but with itself and all methods bound to `thisArg`
+ * @example <caption>Binding a function and methods with arguments</caption>
+ * const myFunction = function (arg1, arg2) { return this; };
+ * myFunction.primitive = "string";
+ * myFunction.method = function (arg1) { return this; };
+ *
+ * const newThis = { newThis: "that's me!"};
+ *
+ * const boundFunction = bindDeep(myFunction, newThis, "add arg1 for each function");
+ * boundFunction("arg2 goes here"); // returns `newThis`
+ * boundFunction.primitive; // still "string"
+ * boundFunction.method(); // returns `newThis`
+ */
+const bindDeep = function (object, thisArg, ...args) {
 	// Early return when not object-like
 	// - Includes null even though `typeof null === "object"`
 	if (!(object instanceof Object)) {
@@ -32,6 +51,7 @@ const bindDeep = function(object, thisArg, ...args) {
 		// Add the array's indexed own properties, all others will be re-added as if it was an object
 		// - Use standard for loop over using Array.prototype.map or iterator in case the prototype was overridden
 		bound = [];
+		// eslint-disable-next-line unicorn/no-for-loop
 		for (let i = 0; i < object.length; i++) {
 			bound[i] = bindDeep(object[i], thisArg, ...args);
 		}

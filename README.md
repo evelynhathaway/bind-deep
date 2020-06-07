@@ -15,16 +15,16 @@
 
 ## Description
 
-Bind an object to `this` in all methods in a function, object, or array. A simple, dependency-free alternative to [deep-bind](https://github.com/jonschlinkert/deep-bind).
+Bind an object to `this` in all methods in a function, object, or array. A simple, single-dependency (only for TypeScript types) alternative to [deep-bind](https://github.com/jonschlinkert/deep-bind).
 
 ## Features
 
-- Works with functions, arrays, and other objects
-	- Works with most custom classes, and array-like objects
-- Binds root function (if passed a function) and all own, enumerable property functions
-	- Includes binding accessors — getters and setters
+- Binds the root function and all own, enumerable property functions including property accessors
+- Compatible with functions, arrays, objects, custom classes, and array-likes
+- Binds the `this` value and optionally, additional arguments just like [`func.bind()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind)
 - Copies objects and enumerable properties deeply
-- Preserves and copies prototype for all types
+- Preserves and copies prototypes for all types
+- **New in `v2.1.0`:** Strict TypeScript type definitions
 
 ## Installation
 
@@ -34,12 +34,18 @@ npm install bind-deep --save
 
 ---
 
-## API
+## Usage
 
-```js
-bindDeep(object: Function | Object | Array, thisArg: Object, ...args:)
-// => bound: Function | Object | Array
-```
+### `bindDeep(object, thisArg, [...args])`
+
+**Returns**: `Function` \| `Object` \| `Array` - The function or object passed as `object` but with
+itself and all methods bound to `thisArg`
+
+| Parameter | Type                              | Description                                                                 |
+| --------- | --------------------------------- | --------------------------------------------------------------------------- |
+| object    | `Function` \| `Object` \| `Array` | Function or object to bind itself and all of its methods                    |
+| thisArg   | `Object`                          | The value bound to `this` for each bound function and method when called    |
+| [...args] | `any`                             | Arguments provided to the bound function when the bound function is invoked |
 
 ## Example
 
