@@ -38,14 +38,19 @@ export declare type BoundDeepFunction<
 			  add a type parameter for `this` and make the following line `((this: ThisType, ...args [...]` if you'd
 			  like to repurpose this type
 		*/
-		((...args: List.Remove<
-			OriginalArguments,
-			"0",
-			Number.Minus<
-				Number.NumberOf<BoundArguments["length"]>,
-				"1"
+		((...args:
+			// Leave original arguments if none are being bound
+			BoundArguments["length"] extends 0 ? OriginalArguments
+			// Remove the arguments that were bound otherwise
+			: List.Remove<
+				OriginalArguments,
+				"0",
+				Number.Minus<
+					Number.NumberOf<BoundArguments["length"]>,
+					"1"
+				>
 			>
-		>) => ReturnValue)
+		) => ReturnValue)
 		&
 		BoundDeepProperties<ToBind, BoundArguments> // Bind properties of the function
 	) : BoundDeepProperties<ToBind, BoundArguments>; // Bind properties of the object or return the primitive

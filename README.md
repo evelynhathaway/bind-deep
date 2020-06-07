@@ -79,6 +79,72 @@ const boundFunc = bindDeep(func, thisArg);
 // => {[Function: bound] method: [Function: bound]}
 ```
 
+### TypeScript
+
+All types inferred or annotated are preserved from the original functions and objects. The type definitions are incredibly strong deep types as the only negative side-effects are:
+
+- If bound arguments are added, the arguments in call signatures are renamed by their bound position.
+- If more than around 39 bound arguments are added, TypeScript will error `Type instantiation is excessively deep and possibly infinite.`
+  - If you somehow do this, slap on an `as any` or your manually created type
+
+An in-depth explanation is commented inside of [`index.d.ts`](./index.d.ts) and below with example code.
+
+```ts
+// Import bind-deep
+import bindDeep from "bind-deep";
+
+
+interface OriginalThis {
+    discriminator: string;
+}
+
+// Original function
+const myFunction = function (this: OriginalThis, arg1: string, arg2: number) {
+    return this;
+};
+myFunction.method = function (this: OriginalThis, arg1: string) {
+    return this;
+};
+myFunction.primitive = "string";
+
+// `thisArg` value
+const newThis = { newThis: "that's me!"};
+
+// Deeply bound functions
+const boundFunction = bindDeep(myFunction, newThis);
+const boundFunctionWithArgs = bindDeep(myFunction, newThis, "add arg1 for each function");
+
+/*
+    Root call signature: `(arg1: string, arg2: number) => OriginalThis`
+    - `this` argument type omitted from the original call signature as it is now bound
+    - All other arugment types and names are preserved
+    - Returns `newThis` as `OriginalThis` due to the return value inferred by TypeScript
+*/
+boundFunction("arg1", 10); // returns `newThis`
+/*
+    Root call signature when passing an argument: `((args_0: number) => OriginalThis)`
+    - Similar explanation to the root call signature
+    - `arg1` argument type omitted from the original call signature as it is now bound
+    - `arg2` is represented as `args_0` with the number type preserved
+        - This unfortunate renaming only occurs when binding arguments
+*/
+boundFunctionWithArgs(10); // returns `newThis`
+
+/*
+    Method call signature: `(method) method(arg1: string): OriginalThis`
+*/
+boundFunction.method("arg1"); // returns `newThis`
+/*
+    Method call signature when passing an argument: `(method) method(): OriginalThis`
+*/
+boundFunctionWithArgs.method(); // returns `newThis`
+
+/*
+    Primitive property type: `primitive: string`
+*/
+const myString: string = boundFunction.primitive; // still "string", typings preserved
+```
+
 ---
 
 ## License
