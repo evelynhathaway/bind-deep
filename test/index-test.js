@@ -81,7 +81,7 @@ describe("bind-deep", function() {
 							}
 						} else {
 							// Recursive
-							check(result[key], template[key], `${path}${isNaN(parseInt(key)) ? `.${key}` : `[${key}]`}`);
+							check(result[key], template[key], `${path}${Number.isNaN(Number.parseInt(key)) ? `.${key}` : `[${key}]`}`);
 						}
 					} else {
 						if (key !== "name" && key !== "length") {

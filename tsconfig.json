@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noEmit": true,
+		"esModuleInterop": true,
+		"lib": [
+			"es6"
+		],
+		"strict": true,
+	},
+	"include": [
+		"index.d.ts"
+	]
+}

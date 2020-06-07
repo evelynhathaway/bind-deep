@@ -3,18 +3,30 @@ module.exports = {
 		"evelyn",
 	],
 	"extends": [
-		"plugin:evelyn/source",
+		"plugin:evelyn/default",
 		"plugin:evelyn/node",
-		"plugin:evelyn/auto",
+		"plugin:evelyn/source",
 	],
 	"overrides": [
 		{
-			"files": [
-				"lib/**/*.js",
-			],
+			"files": "**/*.ts",
 			"extends": [
-				"plugin:evelyn/built",
+				"plugin:evelyn/typescript",
 			],
 		},
+		{
+			"files": "test/**/*.js",
+			"extends": [
+				"plugin:evelyn/mocha",
+				"plugin:evelyn/source",
+			],
+			"rules": {
+				"unicorn/no-null": "off",
+				"mocha/no-setup-in-describe": "off", // Wow my tests are way too meta
+			},
+		},
+	],
+	"ignorePatterns": [
+		"/lib",
 	],
 };
