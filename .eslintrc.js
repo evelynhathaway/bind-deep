@@ -21,8 +21,9 @@ module.exports = {
 				"plugin:evelyn/source",
 			],
 			"rules": {
-				"unicorn/no-null": "off",
+				"unicorn/no-null": "off", // Used null is type testing
 				"mocha/no-setup-in-describe": "off", // Wow my tests are way too meta
+				"no-unused-expressions": "off", // `.to.be.true` and getter side effects
 			},
 		},
 	],
