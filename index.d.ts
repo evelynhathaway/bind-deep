@@ -37,16 +37,20 @@ export declare type BoundDeepFunction<
 	// Return `any` type if not in strict mode
 	StrictBindCallApply extends false ? any : // eslint-disable-line @typescript-eslint/no-explicit-any
 	// Remove ThisType and any arguments from function
-	ToBind extends CallableFunction ? (
-		ToBind extends (...args: [...BoundArguments, ...infer OriginalArguments]) => infer ReturnValue ? (
-			(...args: OriginalArguments) => ReturnValue
-		) : unknown // Not safe to call
+	ToBind extends (...args: infer OriginalArguments) => infer ReturnValue ? (
+		ToBind extends (...args: [...BoundArguments, ...infer RestArguments]) => infer R ? (
+			[...BoundArguments, ...RestArguments] extends OriginalArguments ? (
+				(...args: RestArguments) => ReturnValue
+			) : unknown // Not safe to call
+		) : unknown// Not safe to call except when using unions of nonassignable types
 	) :
 	// Remove ThisType and any arguments from class
-	ToBind extends NewableFunction ? (
-		ToBind extends new (...args: [...BoundArguments, ...infer OriginalArguments]) => infer ReturnValue ? (
-			new (...args: OriginalArguments) => ReturnValue
-		) : unknown // Not safe to construct
+	ToBind extends new (...args: infer OriginalArguments) => infer ReturnValue ? (
+		ToBind extends new (...args:[...BoundArguments, ...infer RestArguments]) => infer R ? (
+			[...BoundArguments, ...RestArguments] extends OriginalArguments ? (
+				new (...args: RestArguments) => ReturnValue
+			) : unknown // Not safe to construct
+		) : unknown// Not safe to construct except when using unions of nonassignable types
 	) : unknown // Not a function
 ) & BoundDeepProperties<ToBind, BoundArguments>; // Bind properties of the object or return the primitive
 
