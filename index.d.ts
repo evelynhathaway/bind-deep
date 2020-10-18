@@ -12,11 +12,22 @@
 type StrictBindCallApply = Function extends CallableFunction & NewableFunction ? true : false;
 
 /*
+	Tuple helper types
+*/
+// Get all but first element of a tuple
+type TupleTailElements<Tuple extends ReadonlyArray<unknown>> =
+	Tuple extends [unknown, ...infer TailElements] ? TailElements : never;
+// Return a tuple of the same length but with all elements `as any`'ed
+type LoosenTuple<Tuple extends ReadonlyArray<unknown>> =
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	Tuple extends [] ? Tuple : [unknown, ...LoosenTuple<TupleTailElements<Tuple>>];
+
+/*
 	Iterate through keys from the object/array/etc.
 */
 export declare type BoundDeepProperties<
 	ToBind,
-	BoundArguments extends Array<unknown>
+	BoundArguments extends ReadonlyArray<unknown>,
 // `object` is being used as the reverse of `Primitive` only for the conditional type, so this is a desired use case
 // eslint-disable-next-line @typescript-eslint/ban-types
 > = ToBind extends object ? {
@@ -32,25 +43,31 @@ export declare type BoundDeepProperties<
 */
 export declare type BoundDeepFunction<
 	ToBind,
-	BoundArguments extends Array<unknown>
+	BoundArguments extends ReadonlyArray<unknown>,
 > = (
 	// Return `any` type if not in strict mode
 	StrictBindCallApply extends false ? any : // eslint-disable-line @typescript-eslint/no-explicit-any
-	// Remove ThisType and any arguments from function
+	// Is callable function? Infer arguments and return values
 	ToBind extends (...args: infer OriginalArguments) => infer ReturnValue ? (
-		ToBind extends (...args: [...BoundArguments, ...infer RestArguments]) => infer R ? (
+		// Infer arguments after bound arguments
+		OriginalArguments extends [...LoosenTuple<BoundArguments>, ...infer RestArguments] ? (
+			// Are the arguments assignable to the original arguments?
 			[...BoundArguments, ...RestArguments] extends OriginalArguments ? (
+				// Remove ThisType and any arguments from function
 				(...args: RestArguments) => ReturnValue
 			) : unknown // Not safe to call
-		) : unknown// Not safe to call except when using unions of nonassignable types
+		) : unknown // Not safe to call
 	) :
-	// Remove ThisType and any arguments from class
+	// Is newable function? Infer arguments and return values
 	ToBind extends new (...args: infer OriginalArguments) => infer ReturnValue ? (
-		ToBind extends new (...args:[...BoundArguments, ...infer RestArguments]) => infer R ? (
+		// Infer arguments after bound arguments
+		OriginalArguments extends [...LoosenTuple<BoundArguments>, ...infer RestArguments] ? (
+			// Are the arguments assignable to the original arguments?
 			[...BoundArguments, ...RestArguments] extends OriginalArguments ? (
+				// Remove ThisType and any arguments from function
 				new (...args: RestArguments) => ReturnValue
 			) : unknown // Not safe to construct
-		) : unknown// Not safe to construct except when using unions of nonassignable types
+		) : unknown // Not safe to construct
 	) : unknown // Not a function
 ) & BoundDeepProperties<ToBind, BoundArguments>; // Bind properties of the object or return the primitive
 
@@ -78,7 +95,7 @@ export declare type BoundDeepFunction<
  */
 export default function bindDeep<
 	ToBind,
-	BoundArguments extends Array<unknown>,
+	BoundArguments extends ReadonlyArray<unknown>,
 > (
 	object: ToBind, thisArg: ThisParameterType<ToBind>, ...args: BoundArguments,
 ) : BoundDeepFunction<ToBind, BoundArguments>;
