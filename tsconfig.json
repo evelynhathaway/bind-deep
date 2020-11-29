@@ -10,6 +10,7 @@
 		"strict": true,
 	},
 	"include": [
+		"types/ts4.1/index.d.ts",
 		"index.d.ts"
 	]
 }
