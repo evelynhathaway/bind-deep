@@ -1,6 +1,6 @@
 {
   "name": "bind-deep",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Lightweight module for binding a function or object deeply.",
   "keywords": [
     "bind",
@@ -21,12 +21,20 @@
   "author": "Evelyn Hathaway <npm@evelyn.dev> (https://evelyn.dev)",
   "main": "./lib/index.js",
   "types": "./index.d.ts",
+  "typesVersions": {
+    ">=4.1": {
+      "*": [
+        "./types-versions/ts4.1/*"
+      ]
+    }
+  },
   "directories": {
     "lib": "./lib",
     "test": "./test"
   },
   "files": [
     "/lib",
+    "/types-versions",
     "/index.d.ts"
   ],
   "scripts": {
@@ -36,24 +44,25 @@
     "test:watch": "mocha test -w"
   },
   "dependencies": {
-    "ts-toolbelt": "^6.15.5"
+    "ts-toolbelt": "^8.0.7"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.1",
-    "@babel/core": "^7.12.3",
-    "@babel/preset-env": "^7.12.1",
-    "@typescript-eslint/eslint-plugin": "^4.4.1",
-    "@typescript-eslint/parser": "^4.4.1",
+    "@babel/cli": "^7.12.8",
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
     "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
-    "eslint": "^7.11.0",
-    "eslint-plugin-evelyn": "^3.1.0",
+    "eslint": "^7.14.0",
+    "eslint-plugin-evelyn": "^4.0.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-mocha": "^8.0.0",
     "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-regexp": "^0.1.1",
     "eslint-plugin-unicorn": "^23.0.0",
-    "mocha": "^8.2.0",
-    "typescript": "^4.0.3"
+    "mocha": "^8.2.1",
+    "typescript": "^4.1.2"
   },
   "engines": {
     "node": ">=4.0.0"

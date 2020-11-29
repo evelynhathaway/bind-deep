@@ -5,8 +5,16 @@
  * @license MIT
  */
 
-import type {List, Number} from "ts-toolbelt";
-
+/*
+	Tuple helper types
+*/
+// Get all but first element of a tuple
+type TupleTailElements<Tuple extends ReadonlyArray<unknown>> =
+	Tuple extends [unknown, ...infer TailElements] ? TailElements : never;
+// Return a tuple of the same length but with all elements `as any`'ed
+type LoosenTuple<Tuple extends ReadonlyArray<unknown>> =
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	Tuple extends [] ? Tuple : [unknown, ...LoosenTuple<TupleTailElements<Tuple>>];
 
 /*
 	Iterate through keys from the object/array/etc.
@@ -22,12 +30,11 @@ export declare type BoundDeepProperties<
 
 /*
 	Return a bound function
-	- These `ts-toolbelt` utils use iteration magic, so if issues arise from long argument lists, type the
-	  function manually
 	- Removes `this` while also removing the arguments provided to `bindDeep`
 	- Existing arguments and return value are inferred, so if you will have to manually retype the function if you also
 	  expect these values to be different after binding. `ReturnType<T>` and other TS util types are your friends!
 	- `this` is removed to allow the bound function to be called (counterintuitive, I know)
+	- TODO: Use throw types for unsafe expressions (https://github.com/microsoft/TypeScript/pull/40468)
 */
 export declare type BoundDeepFunction<
 	ToBind,
@@ -35,35 +42,25 @@ export declare type BoundDeepFunction<
 > = (
 	// Is callable function? Infer arguments and return values
 	ToBind extends (...args: infer OriginalArguments) => infer ReturnValue ? (
-		((...args:
-			// Leave original arguments if none are being bound
-			BoundArguments["length"] extends 0 ? OriginalArguments
-			// Remove the arguments that were bound otherwise
-			: List.Remove<
-				OriginalArguments,
-				"0",
-				Number.Minus<
-					Number.NumberOf<BoundArguments["length"]>,
-					"1"
-				>
-			>
-		) => ReturnValue)
+		// Infer arguments after bound arguments
+		OriginalArguments extends [...LoosenTuple<BoundArguments>, ...infer RestArguments] ? (
+			// Are the arguments assignable to the original arguments?
+			[...BoundArguments, ...RestArguments] extends OriginalArguments ? (
+				// Remove ThisType and any arguments from function
+				(...args: RestArguments) => ReturnValue
+			) : unknown // Not safe to call
+		) : unknown // Not safe to call
 	) :
 	// Is newable function? Infer arguments and return values
 	ToBind extends new (...args: infer OriginalArguments) => infer ReturnValue ? (
-		(new (...args:
-			// Leave original arguments if none are being bound
-			BoundArguments["length"] extends 0 ? OriginalArguments
-			// Remove the arguments that were bound otherwise
-			: List.Remove<
-				OriginalArguments,
-				"0",
-				Number.Minus<
-					Number.NumberOf<BoundArguments["length"]>,
-					"1"
-				>
-			>
-		) => ReturnValue)
+		// Infer arguments after bound arguments
+		OriginalArguments extends [...LoosenTuple<BoundArguments>, ...infer RestArguments] ? (
+			// Are the arguments assignable to the original arguments?
+			[...BoundArguments, ...RestArguments] extends OriginalArguments ? (
+				// Remove ThisType and any arguments from function
+				new (...args: RestArguments) => ReturnValue
+			) : unknown // Not safe to construct
+		) : unknown // Not safe to construct
 	) : unknown // Not a function
 ) & BoundDeepProperties<ToBind, BoundArguments>; // Bind properties of the object or return the primitive
 
