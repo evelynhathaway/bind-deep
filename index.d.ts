@@ -6,12 +6,6 @@
  */
 
 /*
-	Type flag for if the `strictBindCallApply` compiler flag is enabled
-*/
-// eslint-disable-next-line @typescript-eslint/ban-types
-type StrictBindCallApply = Function extends CallableFunction & NewableFunction ? true : false;
-
-/*
 	Tuple helper types
 */
 // Get all but first element of a tuple
@@ -40,13 +34,12 @@ export declare type BoundDeepProperties<
 	- Existing arguments and return value are inferred, so if you will have to manually retype the function if you also
 	  expect these values to be different after binding. `ReturnType<T>` and other TS util types are your friends!
 	- `this` is removed to allow the bound function to be called (counterintuitive, I know)
+	- TODO: Use throw types for unsafe expressions (https://github.com/microsoft/TypeScript/pull/40468)
 */
 export declare type BoundDeepFunction<
 	ToBind,
 	BoundArguments extends ReadonlyArray<unknown>,
 > = (
-	// Return `any` type if not in strict mode
-	StrictBindCallApply extends false ? any : // eslint-disable-line @typescript-eslint/no-explicit-any
 	// Is callable function? Infer arguments and return values
 	ToBind extends (...args: infer OriginalArguments) => infer ReturnValue ? (
 		// Infer arguments after bound arguments
