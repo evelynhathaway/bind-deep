@@ -10,7 +10,7 @@
 		"strict": true,
 	},
 	"include": [
-		"types/ts4.1/index.d.ts",
+		"types-versions/",
 		"index.d.ts"
 	]
 }
