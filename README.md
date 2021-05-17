@@ -7,7 +7,7 @@
 **Lightweight module for binding a function or object deeply**
 
 [![npm version](https://badgen.net/npm/v/bind-deep?icon=npm)](https://www.npmjs.com/package/bind-deep)
-[![check status](https://badgen.net/github/checks/evelynhathaway/bind-deep/master?icon=github)](https://github.com/evelynhathaway/bind-deep/actions)
+[![check status](https://badgen.net/github/checks/evelynhathaway/bind-deep/main?icon=github)](https://github.com/evelynhathaway/bind-deep/actions)
 [![minified + gzip bundle size](https://badgen.net/bundlephobia/minzip/bind-deep)](https://bundlephobia.com/result?p=bind-deep)
 [![license: MIT](https://badgen.net/badge/license/MIT/blue)](/LICENSE)
 
