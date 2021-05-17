@@ -85,7 +85,7 @@ All types inferred or annotated are preserved from the original functions and ob
 
 - If bound arguments are added, the arguments in call signatures are renamed by their bound position.
 - If more than around 39 bound arguments are added, TypeScript will error `Type instantiation is excessively deep and possibly infinite.`
-  - If you somehow do this, slap on an `as any` or your manually created type
+    - If you somehow do this, slap on an `as any` or your manually created type
 
 An in-depth explanation is commented inside of [`index.d.ts`](./index.d.ts) and below with example code.
 
@@ -117,7 +117,7 @@ const boundFunctionWithArgs = bindDeep(myFunction, newThis, "add arg1 for each f
 /*
     Root call signature: `(arg1: string, arg2: number) => OriginalThis`
     - `this` argument type omitted from the original call signature as it is now bound
-    - All other arugment types and names are preserved
+    - All other argument types and names are preserved
     - Returns `newThis` as `OriginalThis` due to the return value inferred by TypeScript
 */
 boundFunction("arg1", 10); // returns `newThis`

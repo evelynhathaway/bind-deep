@@ -40,31 +40,56 @@
   "scripts": {
     "build": "babel src -d lib",
     "lint": "eslint ./",
+    "prepare": "husky install",
     "test": "mocha test",
     "test:watch": "mocha test -w"
   },
+  "commitlint": {
+    "extends": "./node_modules/conventional-changelog-evelyn/commitlint.config.js"
+  },
+  "lint-staged": {
+    "**/package.json": "sort-package-json",
+    "./": "eslint --fix"
+  },
+  "config": {
+    "commitizen": {
+      "path": "@commitlint/prompt"
+    }
+  },
   "dependencies": {
-    "ts-toolbelt": "^8.0.7"
+    "ts-toolbelt": "^9.6.0"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.8",
-    "@babel/core": "^7.12.9",
-    "@babel/preset-env": "^7.12.7",
-    "@typescript-eslint/eslint-plugin": "^4.8.2",
-    "@typescript-eslint/parser": "^4.8.2",
+    "@babel/cli": "^7.13.16",
+    "@babel/core": "^7.14.2",
+    "@babel/preset-env": "^7.14.2",
+    "@commitlint/prompt": "^12.1.4",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.23.0",
     "babel-eslint": "^10.1.0",
-    "chai": "^4.2.0",
-    "eslint": "^7.14.0",
+    "chai": "^4.3.4",
+    "commitlint": "^12.1.4",
+    "conventional-changelog-evelyn": "^1.2.2",
+    "eslint": "^7.26.0",
     "eslint-plugin-evelyn": "^4.0.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-mocha": "^8.0.0",
+    "eslint-plugin-import": "^2.23.2",
+    "eslint-plugin-mocha": "^8.1.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-regexp": "^0.1.1",
+    "eslint-plugin-regexp": "^0.10.0",
     "eslint-plugin-unicorn": "^23.0.0",
-    "mocha": "^8.2.1",
-    "typescript": "^4.1.2"
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
+    "mocha": "^8.4.0",
+    "semantic-release": "^17.4.3",
+    "sort-package-json": "^1.50.0",
+    "typescript": "^4.2.4"
   },
   "engines": {
     "node": ">=4.0.0"
+  },
+  "release": {
+    "extends": "conventional-changelog-evelyn/release.config.js"
   }
 }
