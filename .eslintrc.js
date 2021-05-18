@@ -9,6 +9,10 @@ module.exports = {
 		"plugin:evelyn/source",
 	],
 
+	"rules": {
+		"unicorn/prefer-module": "off", // For now
+	},
+
 	"overrides": [
 		{
 			"files": "**/*.ts",
