@@ -26,7 +26,7 @@
  * boundFunction.primitive; // still "string"
  * boundFunction.method(); // returns `newThis`
  */
-const bindDeep = function (object, thisArg, ...args) {
+const bindDeep = function (object, thisArgument, ...args) {
 	// Early return when not object-like
 	// - Includes null even though `typeof null === "object"`
 	if (!(object instanceof Object)) {
@@ -44,7 +44,7 @@ const bindDeep = function (object, thisArg, ...args) {
 		// Run bind if has the bind method (own or prototype) - objects of the species Function should have this unless overridden the bind property or manually added Symbol.species
 		if (typeof object.bind === "function") {
 			// Function.prototype.bind retains the prototype but properties will be re-added as if it was an object
-			bound = object.bind(thisArg, ...args);
+			bound = object.bind(thisArgument, ...args);
 		}
 	} else if (Array.isArray(object)) { // Create bound array
 		// Run bindDeep over array if isArray ([1, 2, 3] but not {"0": 1, "1": 2, "2": 3, "Symbol.species": Array})
@@ -52,12 +52,12 @@ const bindDeep = function (object, thisArg, ...args) {
 		// - Use standard for loop over using Array.prototype.map or iterator in case the prototype was overridden
 		bound = [];
 		// eslint-disable-next-line unicorn/no-for-loop
-		for (let i = 0; i < object.length; i++) {
-			bound[i] = bindDeep(object[i], thisArg, ...args);
+		for (let index = 0; index < object.length; index++) {
+			bound[index] = bindDeep(object[index], thisArgument, ...args);
 		}
 
 		// Change array prototype if needed
-		// Object.setPrototypeOf is less prefered than Object.create but if the prototype was changed, it should be re-added after being made an array over an strict object
+		// Object.setPrototypeOf is less preferred than Object.create but if the prototype was changed, it should be re-added after being made an array over an strict object
 		if (prototype !== Array.prototype) {
 			Object.setPrototypeOf(bound, prototype);
 		}
@@ -83,7 +83,7 @@ const bindDeep = function (object, thisArg, ...args) {
 		const descriptor = Object.getOwnPropertyDescriptor(object, key);
 		for (const key of ["value", "set", "get"]) {
 			if (descriptor[key]) {
-				descriptor[key] = bindDeep(descriptor[key], thisArg, ...args);
+				descriptor[key] = bindDeep(descriptor[key], thisArgument, ...args);
 			}
 		}
 

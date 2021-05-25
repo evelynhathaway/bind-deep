@@ -90,5 +90,5 @@ export default function bindDeep<
 	ToBind,
 	BoundArguments extends ReadonlyArray<unknown>,
 > (
-	object: ToBind, thisArg: ThisParameterType<ToBind>, ...args: BoundArguments,
+	object: ToBind, thisArgument: ThisParameterType<ToBind>, ...args: BoundArguments,
 ) : BoundDeepFunction<ToBind, BoundArguments>;
