@@ -150,7 +150,7 @@ describe("bind-deep", function () {
 		get prop () {
 			return bindTester.call(this, ...arguments);
 		},
-		set prop (arg) {
+		set prop (argument) {
 			const args = Array.from(arguments);
 
 			// Remove setter argument
