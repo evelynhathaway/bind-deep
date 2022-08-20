@@ -1,6 +1,6 @@
 {
   "name": "bind-deep",
-  "version": "2.2.3",
+  "version": "2.3.0",
   "description": "Lightweight module for binding a function or object deeply.",
   "keywords": [
     "bind",
